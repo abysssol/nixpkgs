@@ -40,13 +40,13 @@ assert builtins.elem acceleration [
 let
   pname = "ollama";
   # don't forget to invalidate all hashes each update
-  version = "0.3.1";
+  version = "0.3.2";
 
   src = fetchFromGitHub {
     owner = "ollama";
     repo = "ollama";
     rev = "v${version}";
-    hash = "sha256-iD7LX4OstnNL2FZKObh4z9krkN0sfUUbFEZxu6OvdBs=";
+    hash = "sha256-EI3dQcsvv8T4lYNcWML8SesOQfAkCEsZvd+C3S+MY5o=";
     fetchSubmodules = true;
   };
 
@@ -65,6 +65,8 @@ let
     (preparePatch "07-clip-unicode.diff" "sha256-1qMJoXhDewxsqPbmi+/7xILQfGaybZDyXc5eH0winL8=")
     (preparePatch "08-pooling.diff" "sha256-7meKWbr06lbVrtxau0AU9BwJ88Z9svwtDXhmHI+hYBk=")
     (preparePatch "09-lora.diff" "sha256-nyKqK/lKWU9HkOSV61Zfoj+25/IKbzPaLkQvAijWObY=")
+    (preparePatch "10-params.diff" "sha256-kkfPg0Bx7mqbCqXVLN1iwi0rmJ6gvFMMBkTnN757fS4=")
+    (preparePatch "11-phi3-sliding-window.diff" "sha256-VbcR4SLa9UXoh8Jq/bPVBerxfg68JZyWALRs7fz7hEs=")
   ];
 
   preparePatch =
