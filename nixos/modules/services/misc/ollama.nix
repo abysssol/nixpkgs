@@ -157,8 +157,17 @@ in
           Download these models using `ollama pull` as soon as `ollama.service` has started.
 
           This creates a systemd unit `ollama-model-loader.service`.
+          Use `services.ollama.syncModels` to automatically remove any models not currenly declared here.
 
           Search for models of your choice from: <https://ollama.com/library>
+        '';
+      };
+      syncModels = lib.mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Synchronize all currently installed models with those declared in `services.ollama.loadModels`,
+          removing any models that are installed but not currently declared.
         '';
       };
       openFirewall = lib.mkOption {
@@ -305,6 +314,10 @@ in
             failed=$((failed + 1))
           fi
         done
+
+        ${lib.optionalString cfg.syncModels ''
+          ollama rm $(ollama list | awk 'NR > 1 {print $1}' | sed -E '/${lib.escapeShellArg (lib.concatStringsSep "|" cfg.loadModels)}/d')
+        ''}
 
         if [ $failed != 0 ]; then
           echo "error: $failed out of $total attempted model downloads failed" >&2
